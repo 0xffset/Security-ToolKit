@@ -1,5 +1,4 @@
 # Python Caches
-/Debugger/_pycache_/
+/Debugger/__pycache__/
 /Debugger/debugger.pyc
 /Debugger/structure.pyc
-
