@@ -2,7 +2,6 @@
 """
 	Script to get all network-based interfaces
 	connected and the same time got packets of them.
-	
 	For more information about pcapy, visit https://pypi.org/project/pcapy/
 
 """
