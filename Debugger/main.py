@@ -1,8 +1,7 @@
-import debugger
+from debugger import debugger
 debugger = debugger()
-
-#debugger.load("path .exe here")
-pid = raw_input("Enter the PID process program: ")
+#debugger.load('C:\\Windows\\System32\\calc.exe')
+pid = input("Enter the PID process program: ")
 debugger.attach(int(pid))
 LIST = debugger.enumerate_threads()
 
@@ -19,7 +18,8 @@ for thread in LIST:
 	print("[**] ECX: 0x%08x " % (thread_context.Ecx))
 	print("[**] EDX: 0x%08x " % (thread_context.Edx))
 	print("[*] END DUMP")
-	debugger.detach()
+debugger.detach()
 	
 	
 	
+

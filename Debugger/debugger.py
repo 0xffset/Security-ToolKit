@@ -33,26 +33,26 @@ class debugger():
 	def write_process_memory(self, address, data):
 		count = c_ulong(0)
 		length = len(data)
-		if not kerne32.WriteProcessMenory(self.h_process, address, c_data, length, byref)):
+		if not kerne32.WriteProcessMenory(self.h_process, address, c_data, length, byref):
 			return False
 		else:
 			return True
 	def bp_set(self, address):
-		if not self.breakpoints.has_key(address)
-		try:
-			# Storage the original byte
-			original_byte = self.read_process_memory(address, 1)
-			# write the INT3 opcode
-			self.write_process_memory(address, "\xCC")
-			# register the breakpoint in out internal internal list
-			self.breakpoint[address] = (address, original_byte)
-		except:
-			return False
+		if not self.breakpoints.has_key(address):
+			try:
+				# Storage the original byte
+				original_byte = self.read_process_memory(address, 1)
+				# write the INT3 opcode
+				self.write_process_memory(address, "\xCC")
+				# register the breakpoint in out internal internal list
+				self.breakpoint[address] = (address, original_byte)
+			except:
+				return False
 		return True
 
 
 	def open_thread(self, thread_id):
-		h_thread = kernel32.OpenThread(THREAD_ALL_ACCESS, Nonem thread_id)
+		h_thread = kernel32.OpenThread(THREAD_ALL_ACCESS, None, thread_id)
 		if h_thread is not None:
 			return h_thread
 		else:
@@ -108,14 +108,14 @@ class debugger():
 		process_information.wShowWindow = 0x0
 
 		# Initialize cb variable in the STARTUPINFO structure
-		startup_info.c = sizeof(startup_info)
+		startup_info.cb = sizeof(startup_info)
 
 		if kernel32.CreateProcessA(path_to_exe,
 									None,
 									None,
 									None,
 									None,
-									creation_flags,
+									create_flags,
 									None,
 									None,
 									byref(startup_info),
@@ -133,15 +133,18 @@ class debugger():
 		h_process = kerne32.OpenProcess(PROCESS_INFORMATION,pid,False)
 		return h_process
 
+	'''
+	Check if the PID process are running. 
+	'''
 	def attach(self, pid):
-	# Trying to attach to the process
-	# If fails, raise an error
-	if kernel32.DebugActiveProcess(pid):
-		self.debugger_active = True
-		self.pid = int(pid)
-		self.run()
-	else:
-		raise ValueError("[*] Error to attach to the process")
+		# Trying to attach to the process
+		# If fails, raise an error
+		if kernel32.DebugActiveProcess(pid):
+			self.debugger_active = True
+			self.pid = int(pid)
+			self.run()
+		else:
+			raise ValueError("[*] Error to attach to the process")
 
 	def run(self):
 		# Loop to poll debuggee for debugging events
